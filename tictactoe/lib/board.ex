@@ -8,37 +8,42 @@ defmodule Board do
     save_position(board_data, position, command_value)
   end
 
-  def execute_command(_, _), do: {:error, "Invalid command"}
+  def execute_command(_, _), do: {:error, "Invalid command!!!"}
 
   defp save_position(board_data, position, command_value) when is_list(board_data) and is_number(position) do
     case Enum.at(board_data, position) do
       :e -> %__MODULE__{board: List.replace_at(board_data, position, command_value), last_player: command_value}
-      nil -> {:error, "invalid position"}
-      _ -> {:error, "position already filled"}
+      nil -> {:warning, "invalid position"}
+      _ -> {:warning, "Position already filled"}
     end
   end
 
   defp save_position(_, error = {:error, _}, _), do: error
-  defp save_position(_, _, _), do: {:error, "Invalid command"}
+  defp save_position(_, _, _), do: {:error, "Invalid command!!"}
 
-  def is_finished(%__MODULE__{last_player: :e}), do: {:error, "Game doesn`t started."}
-  def is_finished(board = %__MODULE__{board: board_data, last_player: player}) do
-    case is_finished(player, board_data) do
-      true -> {:finished, board}
-      false -> {:continue, board}
+  def check_status(%__MODULE__{last_player: :e}), do: {:error, "Game doesn`t started."}
+  def check_status(board = %__MODULE__{board: board_data, last_player: player}), do: {check_status(player, board_data), board}
+  def check_status(_), do: {:error, "Invalid board"}
+
+  defp check_status(player, [player, player, player, _, _, _, _, _, _]), do: :win
+  defp check_status(player, [_, _, _, player, player, player, _, _, _]), do: :win
+  defp check_status(player, [_, _, _, _, _, _, player, player, player]), do: :win
+  defp check_status(player, [player, _, _, player, _, _, player, _, _]), do: :win
+  defp check_status(player, [_, player, _, _, player, _, _, player, _]), do: :win
+  defp check_status(player, [_, _, player, _, _, player, _, _, player]), do: :win
+  defp check_status(player, [player, _, _, _, player, _, _, _, player]), do: :win
+  defp check_status(player, [_, _, player, _, player, _, player, _, _]), do: :win
+  defp check_status(_, list) when is_list(list) do
+    total_blank = list
+    |> Enum.filter(fn v -> v == :e end)
+    |> Enum.count()
+
+    if  total_blank > 0 do
+      :continue
+    else
+      :finished
     end
   end
-  def is_finished(_), do: {:error, "Invalid board"}
-
-  defp is_finished(player, [player, player, player, _, _, _, _, _, _]), do: true
-  defp is_finished(player, [_, _, _, player, player, player, _, _, _]), do: true
-  defp is_finished(player, [_, _, _, _, _, _, player, player, player]), do: true
-  defp is_finished(player, [player, _, _, player, _, _, player, _, _]), do: true
-  defp is_finished(player, [_, player, _, _, player, _, _, player, _]), do: true
-  defp is_finished(player, [_, _, player, _, _, player, _, _, player]), do: true
-  defp is_finished(player, [player, _, _, _, player, _, _, _, player]), do: true
-  defp is_finished(player, [_, _, player, _, player, _, player, _, _]), do: true
-  defp is_finished(_, _), do: false
 
   def print(%Board{board: board}) do
     lines = board
@@ -50,8 +55,8 @@ defmodule Board do
     lines <> "\n"
   end
 
-  defp convert_characters(:x), do: "X"
-  defp convert_characters(:o), do: "O"
-  defp convert_characters(_), do: "#"
+  def convert_characters(:x), do: "X"
+  def convert_characters(:o), do: "O"
+  def convert_characters(_), do: "#"
 
 end

@@ -14,6 +14,14 @@ defmodule BoardTest do
     assert Board.execute_command(Board.new(), Command.new(:o, 3, 1)) == %Board{board: [:e, :e, :e, :e, :e, :e, :o, :e, :e], last_player: :o}
   end
 
+  test "test repeteade commands" do
+    result = Board.new()
+    |> Board.execute_command(Command.new(:x, 1, 1))
+    |> Board.execute_command(Command.new(:o, 1, 1))
+
+    assert result == {:warning, "Position already filled"}
+  end
+
   test "test execute multiple commands" do
     assert Board.new()
     |> Board.execute_command(Command.new(:x, 1, 1))
@@ -29,7 +37,7 @@ defmodule BoardTest do
 
   test "test verify is finished when empty" do
     assert Board.new()
-    |> Board.is_finished() == {:error, "Game doesn`t started."}
+    |> Board.check_status() == {:error, "Game doesn`t started."}
   end
 
   test "test verify is x won" do
@@ -40,7 +48,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:o, 3, 2))
     |> Board.execute_command(Command.new(:x, 3, 3))
 
-    assert Board.is_finished(board) == {:finished, board}
+    assert Board.check_status(board) == {:win, board}
   end
 
   test "test verify is y won" do
@@ -52,7 +60,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:x, 2, 3))
     |> Board.execute_command(Command.new(:o, 3, 1))
 
-    assert Board.is_finished(board) == {:finished, board}
+    assert Board.check_status(board) == {:win, board}
   end
 
   test "test verify won horizontal 1" do
@@ -63,7 +71,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:o, 2, 3))
     |> Board.execute_command(Command.new(:x, 1, 3))
 
-    assert Board.is_finished(board) == {:finished, board}
+    assert Board.check_status(board) == {:win, board}
   end
 
   test "test verify won horizontal 2" do
@@ -74,7 +82,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:o, 1, 3))
     |> Board.execute_command(Command.new(:x, 2, 3))
 
-    assert Board.is_finished(board) == {:finished, board}
+    assert Board.check_status(board) == {:win, board}
   end
 
   test "test verify won horizontal 3" do
@@ -85,7 +93,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:o, 1, 3))
     |> Board.execute_command(Command.new(:x, 3, 3))
 
-    assert Board.is_finished(board) == {:finished, board}
+    assert Board.check_status(board) == {:win, board}
   end
 
   test "test verify won vertical 1" do
@@ -96,7 +104,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:o, 2, 2))
     |> Board.execute_command(Command.new(:x, 3, 1))
 
-    assert Board.is_finished(board) == {:finished, board}
+    assert Board.check_status(board) == {:win, board}
   end
 
   test "test verify won vertical 2" do
@@ -107,7 +115,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:o, 3, 3))
     |> Board.execute_command(Command.new(:x, 3, 2))
 
-    assert Board.is_finished(board) == {:finished, board}
+    assert Board.check_status(board) == {:win, board}
   end
 
   test "test verify won vertical 3" do
@@ -118,7 +126,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:o, 2, 2))
     |> Board.execute_command(Command.new(:x, 3, 3))
 
-    assert Board.is_finished(board) == {:finished, board}
+    assert Board.check_status(board) == {:win, board}
   end
 
   test "test verify not wont" do
@@ -128,7 +136,7 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:x, 2, 3))
     |> Board.execute_command(Command.new(:o, 2, 2))
 
-    assert Board.is_finished(board) == {:continue, board}
+    assert Board.check_status(board) == {:continue, board}
   end
 
   test "test print empty" do
