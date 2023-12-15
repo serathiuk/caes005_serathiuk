@@ -1,0 +1,779 @@
+% abtex2-modelo-artigo.tex, v-1.9.2 laurocesar
+% Copyright 2012-2014 by abnTeX2 group at http://abntex2.googlecode.com/ 
+%
+
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% abnTeX2: Modelo de Artigo Acadêmico em conformidade com
+% ABNT NBR 6022:2003: Informação e documentação - Artigo em publicação 
+% periódica científica impressa - Apresentação
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+
+\documentclass[
+	% -- opções da classe memoir --
+	article,			% indica que é um artigo acadêmico
+	11pt,				% tamanho da fonte
+	oneside,			% para impressão apenas no verso. Oposto a twoside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE % títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	sumario=tradicional
+	]{abntex2}
+
+
+% ---
+% PACOTES
+% ---
+
+% ---
+% Pacotes fundamentais 
+% ---
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{nomencl} 			% Lista de simbolos
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage{listings}
+\usepackage{minted}
+% ---
+		
+% ---
+% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
+% ---
+\usepackage{lipsum}				% para geração de dummy text
+% ---
+		
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+% ---
+
+\selectlanguage{english}
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Comparative Analysis of Functional Programming Languages: Miranda and LFE}
+\autor{José Ricardo Serathiuk da Silveira\thanks{ricardo@serathiuk.com}}
+\local{Brasil}
+\data{2023}
+% ---
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={Modelo de artigo científico com abnTeX2},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{atigo científico}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+% --- 
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ---
+% Altera as margens padrões
+% ---
+\setlrmarginsandblock{3cm}{3cm}{*}
+\setulmarginsandblock{3cm}{3cm}{*}
+\checkandfixthelayout
+% ---
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+
+% Espaçamento simples
+\SingleSpacing
+
+% ----
+% Início do documento
+% ----
+\begin{document}
+
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing 
+
+% ----------------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+% ----------------------------------------------------------
+
+%---
+%
+% Se desejar escrever o artigo em duas colunas, descomente a linha abaixo
+% e a linha com o texto ``FIM DE ARTIGO EM DUAS COLUNAS''.
+% \twocolumn[    		% INICIO DE ARTIGO EM DUAS COLUNAS
+%
+%---
+% página de titulo
+\maketitle
+% resumo em português
+% ]  				% FIM DE ARTIGO EM DUAS COLUNAS
+% ---
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual
+
+% ----------------------------------------------------------
+% Introdução
+% ----------------------------------------------------------
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+This study dives into the characteristics of LFE (Lisp Flavoured Erlang) and Miranda languages. Through a comparative analysis, we aim to unravel the distinct features of each language.
+
+\section*{Miranda}
+\addcontentsline{toc}{section}{Miranda}
+
+The Miranda language was created in 1983 by David Turner in the company Research Software Ltd. of England. The first public release was released in 1985. It was created for research and for teaching functional programming. It was the main inspiration for the Haskell language. It was first described on the paper "Miranda: A non-strict functional language with polymorphic types". It was a proprietary language until 2020. In 2020, David Turner announced Miranda as a open source language using the BSD license, with an update for modern computer architectures. David Turner died in 2023, aged 77.
+
+\subsection*{Named Functions}
+\addcontentsline{toc}{section}{Miranda - Named Functions}
+
+The function in Miranda has the follow structure:
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+[function name] p1, p2, ... = [Function body]
+\end{minted}
+
+Example:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+sum_numbers a b = a + b
+\end{minted}
+
+To call the function you can use the follow code:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+sum_numbers 2 3
+\end{minted}
+
+\subsection*{Anonymous Functions}
+\addcontentsline{toc}{section}{Miranda - Anonymous Functions}
+
+According \citeonline{glynn_1999_haskell}, all Miranda functions needs to be named.
+
+\subsection*{Modules}
+\addcontentsline{toc}{section}{Miranda - Modules}
+
+In Miranda, the absence of a Module structure is compensated by the presence of an "Abstract Type" structure, identified by the keyword abstype. This powerful feature empowers you to craft structures reminiscent of Modules in other functional languages.
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+abstype type_declaration
+with function_type_signature_1
+     ...
+     function_type_signature_N
+
+type_declaration_instantiation 
+
+function_definition_1
+...
+function_definition_N
+\end{minted}
+
+Example:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+abstype stack *
+with empty::stack *
+     push::*->stack *->stack *
+     pop::stack *->stack *
+     top::stack *->*
+     isempty::stack *->bool
+     showstack::(*->[char])->stack *->[char]
+
+stack * == [*]
+empty = []
+push a x = a:x
+pop(a:x) = x
+top(a:x) = a
+isempty x = (x=[])
+showstNck f [] = "empty"
+showstack f (a:x) = "(push " ++ f a ++ " " ++ showstack f x ++ ")"
+
+teststack = push 1 (push 2 (push 3 empty))
+\end{minted}
+
+
+\subsection*{User Defined Types}
+\addcontentsline{toc}{section}{Miranda - User Defined Types}
+
+The programmer can create 'Abstract Types' like specified in Modules section. Another User Defined Type is Algebraic Types:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+new_type_name::= Value1 | Value2 | ... | ValueN
+\end{minted}
+Examples:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+switch::= On | Off
+rgb::= Rgb(num,num,num)
+
+switch=On
+rgb_color=Rgb(0,47,167)
+\end{minted}
+
+\subsection*{Recursive Function}
+\addcontentsline{toc}{section}{Miranda - Recursive Function}
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+|| recursive factorial
+|| whitespace is significant - notice the use of layout in the example
+
+rec_factorial n = 1, if n=0
+                = n * rec_factorial (n-1), n>0
+
+|| alternate version using pattern matching:
+pattern_factorial 0     = 1
+pattern_factorial (k+1) = (k+1) * pattern_factorial k
+\end{minted}
+
+\subsection*{Lazy or Strict Evaluation}
+\addcontentsline{toc}{section}{Miranda - Lazy or Strict Evaluation}
+
+According to \cite{wikipedia_2021_lazy}, Lazy Evaluation in Miranda works as default of the language, without any type of instruction or command.
+
+\subsection*{Static or Dynamic Typing}
+\addcontentsline{toc}{section}{Miranda - Typing}
+
+Miranda is a strongly typed language with Dynamic Typing.
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+|| Boolean
+authorized = True
+linked = False
+
+|| Integer
+age = 25
+answer_for_everything = 42
+
+|| Real Numbers 
+price = 25.2
+weight = 345.23
+
+|| String
+name = "Zaphod"
+surname = "Beeblebrox"
+
+|| Character
+first_letter = 'a'
+second_letter = 'b'
+\end{minted}
+
+\subsection*{Tooling: Project Creation Commands, Computational Notebook Usage and Browser-Based Execution}
+\addcontentsline{toc}{section}{Miranda - Tooling}
+
+There is no concept of a 'project' in Miranda. Instead, there is a tool called Mira, which serves as the compiler for the language and the default development environment. Additionally, there is no browser-based execution.
+
+The user has the ability to run 'Mira,' which functions as the compiler, editor, and REPL. Within the REPL, the user can type '/edit' to open the default editor (vi). Upon saving the file, the Mira tool will proceed to compile the code.
+
+An extension for IntelliJ, developed by \citeonline{nathanail}, adds Miranda support to the IDE, providing syntax highlighting. However, the use of 'mira' remains necessary.
+
+\subsection*{Concurrency Support}
+\addcontentsline{toc}{section}{Miranda - Concurrency Support}
+
+In \citeonline{turner_1985_miranda} and \citeonline{clack_2011_programming}, no mechanism for multithreading or parallelism is cited. The language defaults to immutability, help in a possible concurrency control. However, there are no mechanisms for any kind of parallelism.
+
+\subsection*{Pattern Matching}
+\addcontentsline{toc}{section}{Miranda - Pattern Matching}
+
+The default template of pattern matching: 
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+function name pattern 1 = function body 1
+function name pattern 2 = function body 2
+. . .
+. . .
+function name pattern N = function body N
+\end{minted}
+
+A simple example:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+dayofweek 1 = "Sunday"
+dayofweek 2 = "Monday"
+dayofweek 3 = "Tuesday"
+dayofweek 4 = "Wednesday"
+dayofweek 5 = "Thursday"
+dayofweek 6 = "Friday"
+dayofweek 7 = "Saturday"
+dayofweek x = "Invalid day"
+\end{minted}
+
+Another examples:
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+|| Comparing
+bothequal (x,x) = True
+bothequal (x,y) = False
+
+|| Comparing 2
+bothzero (0,0) = True
+bothzero (x,y) = False
+
+|| Partial matching
+twenty_four_hour (x,"a.m.") = x
+twenty_four_hour (x,"p.m.") = x + 12
+
+//Lists
+gethead a:x = a
+gettail a:x = x
+\end{minted}
+
+
+\subsection*{Error Handling}
+\addcontentsline{toc}{section}{Miranda - Error Handling}
+
+There's a keyword called "error" that signals an error and terminates the program. However, I haven't discovered a method to control it, akin to the 'throw' and 'catch' mechanisms in modern languages.
+
+I believe it might be achievable using a similar approach as in the Elixir language, but I'm uncertain if there's a recognized convention for Miranda.
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{haskell}
+dayofweek 1 = ("ok", "Sunday")
+dayofweek 2 = ("ok", "Monday")
+dayofweek 3 = ("ok", "Tuesday")
+dayofweek 4 = ("ok", "Wednesday")
+dayofweek 5 = ("ok", "Thursday")
+dayofweek 6 = ("ok", "Friday")
+dayofweek 7 = ("ok", "Saturday")
+dayofweek x = ("error", "Invalid day")
+
+showmessage ("ok", day) = "It's "++day
+showmessage ("error", msg) = msg
+\end{minted}
+
+\subsection*{Community and Ecosystem}
+\addcontentsline{toc}{section}{Miranda - Community and Ecosystem}
+
+The compiler serves as the official ecosystem for Miranda. However, my search hasn't unveiled any signs of Miranda gaining traction within a local community, be it in a university, school, company, or any other domain. 
+
+\subsection*{Interoperability}
+\addcontentsline{toc}{section}{Miranda - Interoperability}
+
+The latest builded  versions:
+
+\begin{itemize}
+\item Windows/Cygwin version 2.041  (note this is for 32-bit Cygwin)
+\item Intel/Linux version 2.042  (replaces earlier versions 2.038,  2027)
+\item SUN/Solaris version 2.028
+\item Intel/Solaris version 2.038
+\item MacOS X version 2.044 (Intel)
+\item MacOS X version 2.032 (PPC)
+\end{itemize}
+
+The Miranda compiler can be built using the source code from version 2.066, and it is compatible with x64 operating systems. The same Miranda program can be compiled for all these platforms.
+
+\section*{LFE}
+\addcontentsline{toc}{section}{LFE}
+
+The Lisp Flavored Erlang (LFE) programming language was created by Robert Virding, with initial development beginning in 2007 and more focused work starting in 2008. Virding, an experienced Lisp programmer, was interest in implementing a Lisp language. He desired to implement a Lisp that would run on and integrate with Erlang, with a specific focus on compatibility with the BEAM (Erlang's virtual machine) and Erlang/OTP.
+
+Robert Virding, a co-inventor of Erlang, played a significant role in the early stages of the Ericsson Computer Science Lab, contributing to Erlang's system design and libraries, as well as its compiler.
+
+\subsection*{Named Functions}
+\addcontentsline{toc}{section}{LFE - Named Functions}
+
+The function in LFE has the follow structure:
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+([function name] (p1, p2, ...) 
+    ([Function body]))
+\end{minted}
+
+Example:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+(sum_numbers (a b)
+    (+ a(e b))
+\end{minted} 
+
+To call the function you can use the follow code:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+(sum_numbers 2 3)
+\end{minted}
+
+\subsection*{Anonymous Functions}
+\addcontentsline{toc}{section}{LFE - Anonymous Functions}
+
+Creating and calling an anonymous function in LFE.
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+;;To create
+(set add-function (lambda (a b) (+ a b)))
+
+;; To call
+(funcall add-function 3 4)
+
+;; Completely anonymous
+(funcall (lambda (a b) (+ a b)) 1 3)
+\end{minted}
+
+\subsection*{Modules}
+\addcontentsline{toc}{section}{LFE - Modules}
+
+Creating a module:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+(defmodule tut1
+  (export all))
+
+(defun double (x)
+  (* 2 x))
+\end{minted}
+
+Creating a module using the module contract.
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+(defmodule tut1
+  (export (double 1)))
+
+(defun double (x)
+  (* 2 x))
+\end{minted}
+
+
+
+\subsection*{User Defined Types}
+\addcontentsline{toc}{section}{LFE - User Defined Types}
+
+The programmer can create records as own types in LFE. The record structure is:
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+;; To define the record
+(defrecord <name-of-record> <field-name-1> <field-name-2> ...)
+
+;; To create a record
+(make-<name-of-record> <field-name-1> <field-value-1> <field-name-2> <field-value-2>)
+
+;; Record structure (is a tuple)
+#(<name-of-record> <field-value-1> <field-value-2>)
+\end{minted}
+
+Example of record: 
+\begin{minted}[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+;; To define the record
+(defrecord person name age)
+
+;; To create a record
+(make-person name "Joao" age 23)
+
+;; Record structure (is a tuple)
+#(person "Joao" 23)
+\end{minted}
+
+The modules mentioned earlier can also be considered a user-defined type.
+
+\subsection*{Recursive Function}
+\addcontentsline{toc}{section}{LFE - Recursive Function}
+
+Factorial using LFE.
+\begin{minted}[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+(defmodule tut2
+  (export (fac 1)))
+
+(defun fac
+  ((1) 1)
+  ((n) (* n (fac (- n 1)))))
+\end{minted}
+
+\subsection*{Lazy or Strict Evaluation}
+\addcontentsline{toc}{section}{LFE - Lazy or Strict Evaluation}
+
+LFE is based on Erlang, which is a Strict evaluation language.
+
+\subsection*{Static or Dynamic Typing}
+\addcontentsline{toc}{section}{LFE - Typing}
+
+LFE shares the dynamic typing characteristic with Erlang, making it a versatile and flexible language.
+
+\subsection*{Project Creation Command}
+\addcontentsline{toc}{section}{LFE - Computational Notebook Usage}
+
+LFE uses the rebar3 Erlang tool to create a new LFE project. The command to create a project:
+\begin{minted}[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{sh}
+rebar3 new lfe-lib my-test-lib
+\end{minted}
+
+\subsection*{Computational Notebook Usage}
+\addcontentsline{toc}{section}{LFE - Computational Notebook Usage}
+
+I haven't found any software like Livebook or Jupyter that is compatible with the LFE language.
+
+\subsection*{Browser-Based Execution}
+\addcontentsline{toc}{section}{LFE - Browser-Based Execution}
+
+I haven't found any browser-based execution for LFE language.
+
+
+\subsection*{Concurrency Support}
+\addcontentsline{toc}{section}{LFE - Concurrency Support}
+
+LFE has concurrency support, and it's actually one of its core features. LFE is built on top of the Erlang Virtual Machine (BEAM), inheriting all of Erlang's capabilities, including its renowned concurrency model.
+
+\subsection*{Pattern Matching}
+\addcontentsline{toc}{section}{LFE - Pattern Matching}
+
+The Pattern Matching on LFE works like Erlang or Elixir.
+
+Fibonnaci:
+\begin{minted}[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{lisp}
+(defun fib
+  ((0) 0)
+  ((1) 1)
+  ((n) (+ (fib (- n 1)) (fib (- n 2)))))
+\end{minted}
+
+\subsection*{Error Handling}
+\addcontentsline{toc}{section}{LFE - Error Handling}
+
+Error handling in LFE, like in Erlang, is largely based on the “let it crash” philosophy. This approach doesn't mean that errors are ignored, but rather that systems are designed to fail gracefully and recover cleanly. You can use the try-catch clause to deal with program errors, like exceptions. I have not found any good documentation explaining how to use this command in LFE.
+
+\subsection*{Community and Ecosystem}
+\addcontentsline{toc}{section}{LFE - Community and Ecosystem}
+
+There is not an active community for LFE, compared with Elixir or Erlang. The main forum has no recent posts. The official documentation is incomplete. About the ecosystem, there is a REPL and tools based on Rebar3. Editors for Lisp-2+ based languages can be used to edit code in LFE.
+
+\subsection*{Interoperability}
+\addcontentsline{toc}{section}{LFE - Interoperability}
+
+According to \citeonline{lfeteam_documentation}, the programmer has "the ability and freedom to utilize Erlang and OTP libraries directly from a Lisp syntax". You can use all the libraries made for Erlang in LFE. But, I have not found evidence proving the inverse is true. If you can invoke LFE code in Erlang.
+
+% ----------------------------------------------------------
+% Referências bibliográficas
+% ----------------------------------------------------------
+\bibliography{abntex2-modelo-references}
+
+
+\end{document}
