@@ -20,9 +20,12 @@ defmodule Tictactoe do
 
     IO.puts("Player "<>  player_str)
     IO.puts("--------")
+    
     line = get_number("Line:")
     column = get_number("Column:")
+    
     IO.puts("--------")
+    
     result = Board.execute_command(board, Command.new(player, line, column))
     case result do
       board = %Board{} -> execute_check_status(board, player)
