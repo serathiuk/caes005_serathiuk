@@ -1,6 +1,6 @@
 # Knowledge Exchange Review
 
-## Open Sourcing Miranda
+## Open Sourcing  (https://www.youtube.com/watch?v=ZkLE0jrflwQ)
 
 David Turner started talking about the history of Miranda. It is a lazy, polymorphic, purely functional language created by him in the 1980s. It is a lambda calculus-based language.  It was the main Haskell language precursor. Miranda was open-sourced under the BSD License in your 64-bit version. Before that, it was closed-source.
 
@@ -9,3 +9,11 @@ David Turner explained the process of updating Miranda to a modern 64-bit open-s
 He believes it will help popularize the language, and he thinks it is a good functional language because it is simpler to understand and learn. Turner had projects to modernize the syntax and make it similar to Haskell. Like the possibility of lower-case identifiers. Turner had other plans to the language, like writing entirely in Miranda.
 
 In my opinion, Miranda is a great language. But, the decision in the past to make it closed-source and the restrictive license prevented adoption of the language. Miranda was the main base of Haskell, and Haskell is the inspiration for many modern programming languages. Miranda has a lot of importance in the history of computer science, but it took too long to decide to open-source Miranda. I learned without a strong community, a functional language, or other technology is difficult to popularize.  A funny part: Turner said he tried to open-source Miranda on Github, but he does not understand Git very well.
+
+##  Do We Really Do Functional Programming in Java? (https://www.youtube.com/watch?v=NSOELVPYAF8)
+
+Ben Evans (writer and developer) analyzes most of the aspects of a functional programming language and checks if Java can be considered a functional language.  He analyzes lambda, pure functions, immutability, high-order functions, recursion, closures, lazy evaluation, currying, and collections. Collections are all mutable by default. The programmer can use it like an immutable structure using Stream resources. Stream, in my opinion, is the most important resource for functional Java after lambda. Stream can manipulate collections in a “functional way”. The programmer can map, reduce, and filter all these resources using something like an “anonymous function”, the Java Lambda. With Java Lambda, you can create high-order functions like structures using a syntax sugar for inner anonymous classes.  Java does not have functions, and because of that, Bean Evans prefers to call it methods, which is the correct name for Java. Ben Evans explained the concept of “pure methods”, which is a single method in a class that does not manipulate external or internal state. Methods that simulate pure functions, or something like mathematical functions. And the programmer can use this type of “method” as a high-order function, for example.
+
+He talked about closures and recursion in Java. Because of the way Java works, the programmer cannot use closures by default. Recursion is a problem for Java because of the way it works. Every method invocation is registered on the stack. Recursion with many calls can generate StackOverFlowException. Lazy evaluation only works with Stream. Even in other JVM languages, like Clojure, lazy evaluation is an issue, according to Evans.
+
+In my opinion, Java can simulate some of the most important characteristics of functional programming. It needs the discipline of the programmer; most of the functional possibilities are not default or native. New resources, like records and pattern matching, are not explained in this talk because they are very new.  These new resources can help Java emulate a functional programming language. But in the end, Java continues to be an object-oriented language with a lot of syntax sugar to look functional. It is not bad. But it does not turn Java into a true functional language, in my opinion and Bean Evans opinion.
