@@ -3,16 +3,18 @@ defmodule Board do
 
   def new, do: %__MODULE__{}
 
-  def execute_command(%__MODULE__{board: board_data}, command = %Command{command: command_value}) do
+  def execute_command(board, command = %Command{command: command_value}) do
     position = Command.calculate_board_position(command)
-    save_position(board_data, position, command_value)
+
+    save_position(board, position, command_value)
+    |> process_last_commands(command)
   end
 
   def execute_command(_, _), do: {:error, "Invalid command!!!"}
 
-  defp save_position(board_data, position, command_value) when is_list(board_data) and is_number(position) do
+  defp save_position(board = %__MODULE__{board: board_data}, position, command_value) when is_list(board_data) and is_number(position) do
     case Enum.at(board_data, position) do
-      :e -> %__MODULE__{board: List.replace_at(board_data, position, command_value), last_player: command_value}
+      :e -> %__MODULE__{board | board: List.replace_at(board_data, position, command_value), last_player: command_value}
       nil -> {:warning, "invalid position"}
       _ -> {:warning, "Position already filled"}
     end
@@ -20,6 +22,18 @@ defmodule Board do
 
   defp save_position(_, error = {:error, _}, _), do: error
   defp save_position(_, _, _), do: {:error, "Invalid command!!"}
+
+  defp process_last_commands(board = %__MODULE__{last_commands: last_commands}, command) when length(last_commands) < 8 do
+    %__MODULE__{board | last_commands: last_commands ++ [command]}
+  end
+
+  defp process_last_commands(board = %__MODULE__{last_commands: [head | tail], board: board_data}, command) do
+    position = Command.calculate_board_position(head)
+    board_data = List.replace_at(board_data, position, :e)
+    %__MODULE__{board | board: board_data, last_commands: tail ++ [command]}
+  end
+
+  defp process_last_commands(msg, _), do: msg
 
   def check_status(%__MODULE__{last_player: :e}), do: {:error, "Game doesn`t started."}
   def check_status(board = %__MODULE__{board: board_data, last_player: player}), do: {check_status(player, board_data), board}

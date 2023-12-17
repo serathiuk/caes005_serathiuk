@@ -7,11 +7,13 @@ defmodule BoardTest do
   end
 
   test "test execute single command for x" do
-    assert Board.execute_command(Board.new(), Command.new(:x, 2, 2)) == %Board{board: [:e, :e, :e, :e, :e, :x, :e, :e, :e, :e, :e, :e, :e, :e, :e, :e], last_player: :x}
+    assert Board.execute_command(Board.new(), Command.new(:x, 2, 2)) ==
+      %Board{board: [:e, :e, :e, :e, :e, :x, :e, :e, :e, :e, :e, :e, :e, :e, :e, :e], last_player: :x, last_commands: [Command.new(:x, 2, 2)]}
   end
 
   test "test execute single command for o" do
-    assert Board.execute_command(Board.new(), Command.new(:o, 3, 1)) == %Board{board: [:e, :e, :e, :e, :e, :e, :e, :e, :o, :e, :e, :e, :e, :e, :e, :e], last_player: :o}
+    assert Board.execute_command(Board.new(), Command.new(:o, 3, 1)) ==
+      %Board{board: [:e, :e, :e, :e, :e, :e, :e, :e, :o, :e, :e, :e, :e, :e, :e, :e], last_player: :o, last_commands: [Command.new(:o, 3, 1)]}
   end
 
   test "test repeteade commands" do
@@ -32,7 +34,12 @@ defmodule BoardTest do
     |> Board.execute_command(Command.new(:o, 2, 3))
     |> Board.execute_command(Command.new(:x, 3, 1))
     |> Board.execute_command(Command.new(:o, 3, 2))
-    |> Board.execute_command(Command.new(:x, 3, 3)) == %Board{board: [:x, :o, :x, :e, :o, :x, :o, :e, :x, :o, :x, :e, :e, :e, :e, :e], last_player: :x}
+    |> Board.execute_command(Command.new(:x, 3, 3))
+    |> Board.execute_command(Command.new(:o, 4, 4)) ==
+      %Board{board: [:e, :e, :x, :e, :o, :x, :o, :e, :x, :o, :x, :e, :e, :e, :e, :o], last_player: :o, last_commands: [
+        Command.new(:x, 1, 3), Command.new(:o, 2, 1), Command.new(:x, 2, 2), Command.new(:o, 2, 3),
+        Command.new(:x, 3, 1), Command.new(:o, 3, 2), Command.new(:x, 3, 3), Command.new(:o, 4, 4)
+      ]}
   end
 
   test "test verify is finished when empty" do
@@ -91,39 +98,7 @@ defmodule BoardTest do
     assert Board.print(Board.new) == print
   end
 
-  test "test print complete board" do
-    print = """
-     X|O|X|O
-     -------
-     X|O|X|O
-     -------
-     X|O|X|O
-     -------
-     O|X|O|X
-     """
-
-    board = Board.new()
-    |> Board.execute_command(Command.new(:x, 1, 1))
-    |> Board.execute_command(Command.new(:o, 1, 2))
-    |> Board.execute_command(Command.new(:x, 1, 3))
-    |> Board.execute_command(Command.new(:o, 1, 4))
-    |> Board.execute_command(Command.new(:x, 2, 1))
-    |> Board.execute_command(Command.new(:o, 2, 2))
-    |> Board.execute_command(Command.new(:x, 2, 3))
-    |> Board.execute_command(Command.new(:o, 2, 4))
-    |> Board.execute_command(Command.new(:x, 3, 1))
-    |> Board.execute_command(Command.new(:o, 3, 2))
-    |> Board.execute_command(Command.new(:x, 3, 3))
-    |> Board.execute_command(Command.new(:o, 3, 4))
-    |> Board.execute_command(Command.new(:x, 4, 2))
-    |> Board.execute_command(Command.new(:o, 4, 1))
-    |> Board.execute_command(Command.new(:x, 4, 4))
-    |> Board.execute_command(Command.new(:o, 4, 3))
-
-    assert Board.print(board) == print
-  end
-
-  test "test partial board" do
+  test "test board" do
     print = """
      X|#|#|#
      -------
