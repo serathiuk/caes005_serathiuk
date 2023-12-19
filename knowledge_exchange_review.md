@@ -1,6 +1,6 @@
 # Knowledge Exchange Review
 
-## Open Sourcing  (https://www.youtube.com/watch?v=ZkLE0jrflwQ)
+## Open Sourcing Miranda (https://www.youtube.com/watch?v=ZkLE0jrflwQ)
 
 David Turner started talking about the history of Miranda. It is a lazy, polymorphic, purely functional language created by him in the 1980s. It is a lambda calculus-based language.  It was the main Haskell language precursor. Miranda was open-sourced under the BSD License in your 64-bit version. Before that, it was closed-source.
 
